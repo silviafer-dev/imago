@@ -4,6 +4,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const accessKey = "5LfVRts4D2P9eRWo9qJGsl4ZUIGLn761Zgv_kTXULM0";
 const endPointSearch = "https://api.unsplash.com/search/photos";
 
+export const getPhoto = async (id) => {
+  const apiGetPhoto = `https://api.unsplash.com/photos/${id}?client_id=${accessKey}`;
+  const resp = await axios.get(apiGetPhoto);
+  return resp.data;
+};
+
 export const fetchPhotos = createAsyncThunk(
   "posts/fetchPhotos",
   async (query = "") => {
