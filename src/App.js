@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { FavPhotos } from "./features/photos/FavPhotos";
+import { FavPhotos } from "./pages/FavPhotos";
 
 import { Home } from "./pages/Home.js";
 

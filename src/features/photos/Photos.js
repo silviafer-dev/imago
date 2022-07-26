@@ -1,12 +1,13 @@
-import { ImageList, ImageListItem } from "@mui/material";
+import { ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPhotos, selectState } from "./photoSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { addPhoto } from "./FavPhotosSlice";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { addPhoto, removePhoto } from "./FavPhotosSlice";
 
-export function Photos({ query }) {
+export function Photos({ query, favPhotos }) {
   const photos = useSelector(selectState);
 
   const dispatch = useDispatch();
@@ -22,8 +23,22 @@ export function Photos({ query }) {
   let year = date.getFullYear();
   date = `${day}-${month}-${year}`;
 
+  const updateFavorite = (itemId) => {
+    //   let updatedFavorite = [...favorite];
+    //   if (!updatedFavorite.includes(itemId)) {
+    //     updatedFavorite = [...favorite, itemId];
+    //   } else {
+    //     updatedFavorite = updatedFavorite.filter(
+    //       (favoriteItem) => itemId !== favoriteItem
+    //     );
+    //   }
+    //   setFavorite(updatedFavorite);
+  };
+
   const addToFavorite = (id) => {
+    if (favPhotos.find((item) => item.id === id)) return;
     let newFavorite = photos.find((item) => item.id === id);
+
     let detailPhoto = {
       id: newFavorite.id,
       description: newFavorite.description,
@@ -34,8 +49,22 @@ export function Photos({ query }) {
       likes: newFavorite.likes,
       setDate: date,
     };
+
+    // let uniqueId = [];
+    // const uniquePhotos = favPhotos.filter((el) => {
+    //   const isDuplicate = uniqueId.includes(el.id);
+
+    //   if (!isDuplicate) {
+    //     uniqueId.push(el.id);
+    //     return true;
+    //   }
+    //   return false;
+    // });
     dispatch(addPhoto(detailPhoto));
-    console.log(detailPhoto, "newFav");
+  };
+
+  const removeFromFavorite = (id) => {
+    dispatch(removePhoto(id));
   };
 
   return (
@@ -54,13 +83,36 @@ export function Photos({ query }) {
                   alt={img.alt_description}
                   loading="lazy"
                 />
-
-                <FavoriteBorderIcon onClick={() => addToFavorite(img.id)} />
+                <ImageListItemBar
+                  actionIcon={
+                    <div onClick={() => updateFavorite(img.id)}>
+                      {favPhotos.find((item) => item.id === img.id) ? (
+                        <FavoriteIcon
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            color: "red",
+                          }}
+                          onClick={() => removeFromFavorite(img.id)}
+                        />
+                      ) : (
+                        <FavoriteBorderIcon
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            color: "red",
+                          }}
+                          onClick={() => addToFavorite(img.id)}
+                        />
+                      )}
+                    </div>
+                  }
+                />
 
                 <h3>{img.user.instagram_username}</h3>
               </ImageListItem>
             ))
-          : "Loading..."}
+          : "No matches found..."}
       </ImageList>
     </div>
   );

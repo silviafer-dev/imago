@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Photos } from "./Photos";
 
-export function SearchPhoto({ photos }) {
+export function SearchPhoto({ photos, favPhotos }) {
   const [keyword, setKeyword] = useState("");
 
   const handleChange = (e) => {
@@ -22,7 +22,7 @@ export function SearchPhoto({ photos }) {
           onChange={handleChange}
         />
       </form>
-      <Photos query={keyword} photos={photos} />;
+      <Photos query={keyword} photos={photos} favPhotos={favPhotos} />;
     </div>
   );
 }
