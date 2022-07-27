@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  photos: JSON.parse(localStorage.getItem("favoritePhoto")) ?? [],
+  collection: JSON.parse(localStorage.getItem("favoritePhoto")) ?? [],
 };
 
 const favPhotosSlice = createSlice({
@@ -9,22 +9,35 @@ const favPhotosSlice = createSlice({
   initialState,
   reducers: {
     addPhoto(state, action) {
-      state.photos.push(action.payload);
-      localStorage.setItem("favoritePhoto", JSON.stringify(state.photos));
-      console.log(state.photos, "action");
+      state.collection.push(action.payload);
+      localStorage.setItem("favoritePhoto", JSON.stringify(state.collection));
     },
-    removePhoto(state, action, id) {
-      const newState = state.photos.filter(
+    removePhoto(state, action) {
+      const newStatePhotos = state.collection.filter(
         (item) => item.id !== action.payload
       );
-      localStorage.setItem("favoritePhoto", JSON.stringify(newState));
-      return { ...state, photos: newState };
+      localStorage.setItem("favoritePhoto", JSON.stringify(newStatePhotos));
+      return { ...state, collection: newStatePhotos };
+    },
+    getFavoritePhotos(state, action) {
+      state.collection = action.payload;
+    },
+    updatePhoto(state, action) {
+      const newStateDescription = state.collection.map((item) =>
+        item.id === action.payload.id ? action.payload : item
+      );
+      localStorage.setItem(
+        "favoritePhoto",
+        JSON.stringify(newStateDescription)
+      );
+      return { ...state, collection: newStateDescription };
     },
   },
 });
 
-export const { addPhoto } = favPhotosSlice.actions;
-export const { removePhoto } = favPhotosSlice.actions;
+export const { addPhoto, removePhoto, getFavoritePhotos, updatePhoto } =
+  favPhotosSlice.actions;
+
 export default favPhotosSlice.reducer;
 
-export const selectFavoriteState = (state) => state.favorites.photos;
+export const selectFavoriteState = (state) => state.favoritesPhotos.collection;

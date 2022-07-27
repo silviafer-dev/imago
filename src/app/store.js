@@ -4,7 +4,7 @@ import photoReducer from "../features/photos/photoSlice";
 
 export const store = configureStore({
   reducer: {
-    photos: photoReducer,
-    favorites: favoriteReducer,
+    searchPhotos: photoReducer,
+    favoritesPhotos: favoriteReducer,
   },
 });

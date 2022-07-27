@@ -1,6 +1,10 @@
-import { ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
-
-import React, { useEffect, useState } from "react";
+import {
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  Typography,
+} from "@mui/material";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPhotos, selectState } from "./photoSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -11,7 +15,6 @@ export function Photos({ query, favPhotos }) {
   const photos = useSelector(selectState);
 
   const dispatch = useDispatch();
-  console.log(photos, "ph");
 
   useEffect(() => {
     dispatch(fetchPhotos(query));
@@ -22,18 +25,6 @@ export function Photos({ query, favPhotos }) {
   let month = `${date.getMonth() + 1}`.padStart(2, "0");
   let year = date.getFullYear();
   date = `${day}-${month}-${year}`;
-
-  const updateFavorite = (itemId) => {
-    //   let updatedFavorite = [...favorite];
-    //   if (!updatedFavorite.includes(itemId)) {
-    //     updatedFavorite = [...favorite, itemId];
-    //   } else {
-    //     updatedFavorite = updatedFavorite.filter(
-    //       (favoriteItem) => itemId !== favoriteItem
-    //     );
-    //   }
-    //   setFavorite(updatedFavorite);
-  };
 
   const addToFavorite = (id) => {
     if (favPhotos.find((item) => item.id === id)) return;
@@ -50,16 +41,6 @@ export function Photos({ query, favPhotos }) {
       setDate: date,
     };
 
-    // let uniqueId = [];
-    // const uniquePhotos = favPhotos.filter((el) => {
-    //   const isDuplicate = uniqueId.includes(el.id);
-
-    //   if (!isDuplicate) {
-    //     uniqueId.push(el.id);
-    //     return true;
-    //   }
-    //   return false;
-    // });
     dispatch(addPhoto(detailPhoto));
   };
 
@@ -69,7 +50,10 @@ export function Photos({ query, favPhotos }) {
 
   return (
     <div>
-      <h2>Photos</h2>
+      <Typography variant="h3" style={{ marginLeft: "20px" }}>
+        Photos
+      </Typography>
+
       <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
         {photos.length
           ? photos.map((img, index) => (
@@ -84,8 +68,13 @@ export function Photos({ query, favPhotos }) {
                   loading="lazy"
                 />
                 <ImageListItemBar
+                  title={
+                    img.user.instagram_username
+                      ? `Ph: ${img.user.instagram_username}`
+                      : ""
+                  }
                   actionIcon={
-                    <div onClick={() => updateFavorite(img.id)}>
+                    <div>
                       {favPhotos.find((item) => item.id === img.id) ? (
                         <FavoriteIcon
                           style={{
@@ -108,8 +97,6 @@ export function Photos({ query, favPhotos }) {
                     </div>
                   }
                 />
-
-                <h3>{img.user.instagram_username}</h3>
               </ImageListItem>
             ))
           : "No matches found..."}

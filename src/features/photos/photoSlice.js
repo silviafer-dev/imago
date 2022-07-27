@@ -38,4 +38,4 @@ const searchSlice = createSlice({
 });
 
 export default searchSlice.reducer;
-export const selectState = (state) => state.photos.results;
+export const selectState = (state) => state.searchPhotos.results;
