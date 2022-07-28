@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Photos } from "./Photos";
 
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
@@ -71,7 +70,7 @@ export function SearchPhoto({ photos, favPhotos }) {
   return (
     <div>
       <Box sx={{ flexGrow: 1 }} onSubmit={handleSubmit}>
-        <AppBar position="static">
+        <AppBar position="static" style={{ backgroundColor: "black" }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -82,25 +81,25 @@ export function SearchPhoto({ photos, favPhotos }) {
             >
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
-                  <div>
-                    <Button variant="contained" {...bindTrigger(popupState)}>
-                      <MenuIcon />
-                    </Button>
+                  <>
+                    <MenuIcon
+                      variant="contained"
+                      {...bindTrigger(popupState)}
+                      style={{ backgroundColor: "black" }}
+                    />
+
                     <Menu {...bindMenu(popupState)}>
-                      <MenuItem onClick={popupState.close}>
-                        <Link
-                          to="/favorite"
-                          style={{
-                            textDecoration: "none",
-                            color: "black",
-                            fontSize: "1.2rem",
-                          }}
-                        >
-                          Favorite
-                        </Link>
-                      </MenuItem>
+                      <Link
+                        to="/favorite"
+                        style={{
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                      >
+                        <MenuItem>Favorite</MenuItem>
+                      </Link>
                     </Menu>
-                  </div>
+                  </>
                 )}
               </PopupState>
             </IconButton>

@@ -19,9 +19,7 @@ const favPhotosSlice = createSlice({
       localStorage.setItem("favoritePhoto", JSON.stringify(newStatePhotos));
       return { ...state, collection: newStatePhotos };
     },
-    getFavoritePhotos(state, action) {
-      state.collection = action.payload;
-    },
+
     updatePhoto(state, action) {
       const newStateDescription = state.collection.map((item) =>
         item.id === action.payload.id ? action.payload : item
@@ -35,8 +33,7 @@ const favPhotosSlice = createSlice({
   },
 });
 
-export const { addPhoto, removePhoto, getFavoritePhotos, updatePhoto } =
-  favPhotosSlice.actions;
+export const { addPhoto, removePhoto, updatePhoto } = favPhotosSlice.actions;
 
 export default favPhotosSlice.reducer;
 
