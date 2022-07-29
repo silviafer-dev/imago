@@ -55,51 +55,55 @@ export function Photos({ query, favPhotos }) {
       </Typography>
 
       <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
-        {photos.length
-          ? photos.map((img, index) => (
-              <ImageListItem
-                key={`${img.id}-${index}`}
-                cols={img.cols || 1}
-                rows={img.rows || 1}
-              >
-                <img
-                  src={img.urls.thumb}
-                  alt={img.alt_description}
-                  loading="lazy"
-                />
-                <ImageListItemBar
-                  title={
-                    img.user.instagram_username
-                      ? `Ph: ${img.user.instagram_username}`
-                      : ""
-                  }
-                  actionIcon={
-                    <div>
-                      {favPhotos.find((item) => item.id === img.id) ? (
-                        <FavoriteIcon
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            color: "red",
-                          }}
-                          onClick={() => removeFromFavorite(img.id)}
-                        />
-                      ) : (
-                        <FavoriteBorderIcon
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            color: "red",
-                          }}
-                          onClick={() => addToFavorite(img.id)}
-                        />
-                      )}
-                    </div>
-                  }
-                />
-              </ImageListItem>
-            ))
-          : "No matches found..."}
+        {photos.length ? (
+          photos.map((img, index) => (
+            <ImageListItem
+              key={`${img.id}-${index}`}
+              cols={img.cols || 1}
+              rows={img.rows || 1}
+            >
+              <img
+                src={img.urls.thumb}
+                alt={img.alt_description}
+                loading="lazy"
+              />
+              <ImageListItemBar
+                title={
+                  img.user.instagram_username
+                    ? `Ph: ${img.user.instagram_username}`
+                    : ""
+                }
+                actionIcon={
+                  <div>
+                    {favPhotos.find((item) => item.id === img.id) ? (
+                      <FavoriteIcon
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          color: "red",
+                        }}
+                        onClick={() => removeFromFavorite(img.id)}
+                      />
+                    ) : (
+                      <FavoriteBorderIcon
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          color: "red",
+                        }}
+                        onClick={() => addToFavorite(img.id)}
+                      />
+                    )}
+                  </div>
+                }
+              />
+            </ImageListItem>
+          ))
+        ) : (
+          <Typography variant="h6" style={{ marginLeft: "20px" }}>
+            No matches found...
+          </Typography>
+        )}
       </ImageList>
     </div>
   );

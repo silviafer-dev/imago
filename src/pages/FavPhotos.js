@@ -11,6 +11,9 @@ import {
   Typography,
   IconButton,
   AppBar,
+  InputLabel,
+  Select,
+  FormControl,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -26,7 +29,7 @@ import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 import { ModalPhoto } from "../features/photos/ModalPhoto";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -74,6 +77,22 @@ export function FavPhotos() {
   const [open, setOpen] = useState(false);
   const [editPhoto, setEditPhoto] = useState("");
   const [searchDescription, setSearchDescription] = useState("");
+  const [favoriteState, setFavoriteState] = useState([]);
+  const [orderBy, setOrderBy] = useState("");
+
+  useEffect(() => {
+    const orderedPhotos = favPhotos.filter((photo) => photo[orderBy]);
+    orderedPhotos.sort((a, b) => {
+      if (a[orderBy] > b[orderBy]) {
+        return -1;
+      } else if (a[orderBy] < b[orderBy]) {
+        return 1;
+      }
+      return 0;
+    });
+    setFavoriteState(orderedPhotos);
+    console.log(orderedPhotos);
+  }, [favPhotos, orderBy]);
 
   const dispatch = useDispatch();
 
@@ -165,6 +184,7 @@ export function FavPhotos() {
             >
               IMAGO
             </Typography>
+
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -183,71 +203,152 @@ export function FavPhotos() {
         My Photos
       </Typography>
 
-      <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
-        {filteredPhoto.map((photo) => (
-          <div key={photo.id}>
-            <ModalPhoto
-              favPhotos={favPhotos}
-              open={open}
-              handleClose={handleClose}
-              photo={photo.thumb}
-              description={photo.description}
-              editPhoto={editPhoto}
-            />
-            <ImageListItem
-              key={photo.id}
-              sx={{ height: "400px", width: "100%" }}
-            >
-              <img
-                onClick={() => {
-                  handleOpen(photo);
-                }}
-                src={photo.thumb}
-                alt={photo.id}
-                loading="lazy"
-              />
+      <FormControl
+        variant="filled"
+        sx={{ m: 1, minWidth: 120, margin: "20px" }}
+      >
+        <InputLabel id="demo-simple-select-label">Order By: </InputLabel>
+        <Select
+          value={orderBy}
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          onChange={(e) => setOrderBy(e.target.value)}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value="width">Width</MenuItem>
+          <MenuItem value="height">Height</MenuItem>
+          <MenuItem value="likes">Likes</MenuItem>
+        </Select>
+      </FormControl>
 
-              <ImageListItemBar
-                title={`Likes: ${photo.likes}`}
-                subtitle={`Saved: ${photo.setDate}`}
-                actionIcon={
-                  <>
-                    <IconButton
-                      onClick={() => {
-                        downloadPhoto(photo.full);
-                      }}
-                    >
-                      <DownloadForOfflineIcon
-                        style={{
-                          color: "white",
-                          width: "40px",
-                          height: "40px",
+      <ModalPhoto open={open} handleClose={handleClose} editPhoto={editPhoto} />
+
+      <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
+        {favoriteState.length === 0 ? (
+          filteredPhoto.length ? (
+            filteredPhoto.map((photo) => (
+              <div key={photo.id}>
+                <ImageListItem
+                  key={photo.id}
+                  sx={{ height: "400px", width: "100%" }}
+                >
+                  <img
+                    onClick={() => {
+                      handleOpen(photo);
+                    }}
+                    src={photo.thumb}
+                    alt={photo.id}
+                    loading="lazy"
+                  />
+
+                  <ImageListItemBar
+                    title={`Likes: ${photo.likes}`}
+                    subtitle={`Saved: ${photo.setDate}`}
+                    actionIcon={
+                      <>
+                        <IconButton
+                          onClick={() => {
+                            downloadPhoto(photo.full);
+                          }}
+                        >
+                          <DownloadForOfflineIcon
+                            style={{
+                              color: "white",
+                              width: "40px",
+                              height: "40px",
+                            }}
+                          ></DownloadForOfflineIcon>
+                        </IconButton>
+                        <IconButton
+                          onClick={() => removeFromFavorite(photo.id)}
+                        >
+                          <HeartBrokenIcon
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              color: "white",
+                            }}
+                          />
+                        </IconButton>
+                      </>
+                    }
+                  />
+                </ImageListItem>
+                <h3>
+                  Description:
+                  {!photo.description
+                    ? ` The user has not included any description.`
+                    : ` ${photo.description}`}
+                </h3>
+                <p>Height: {photo.height}</p>
+                <p>Width: {photo.width}</p>
+              </div>
+            ))
+          ) : (
+            <Typography variant="h6" style={{ marginLeft: "20px" }}>
+              No matches found...
+            </Typography>
+          )
+        ) : (
+          favoriteState.map((photo) => (
+            <div key={photo.id}>
+              <ImageListItem
+                key={photo.id}
+                sx={{ height: "400px", width: "100%" }}
+              >
+                <img
+                  onClick={() => {
+                    handleOpen(photo);
+                  }}
+                  src={photo.thumb}
+                  alt={photo.id}
+                  loading="lazy"
+                />
+
+                <ImageListItemBar
+                  title={`Likes: ${photo.likes}`}
+                  subtitle={`Saved: ${photo.setDate}`}
+                  actionIcon={
+                    <>
+                      <IconButton
+                        onClick={() => {
+                          downloadPhoto(photo.full);
                         }}
-                      ></DownloadForOfflineIcon>
-                    </IconButton>
-                    <IconButton onClick={() => removeFromFavorite(photo.id)}>
-                      <HeartBrokenIcon
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          color: "white",
-                        }}
-                      />
-                    </IconButton>
-                  </>
-                }
-              />
-            </ImageListItem>
-            <h3>
-              Description:
-              {!photo.description
-                ? ` The user has not included any description.`
-                : ` ${photo.description}`}
-            </h3>
-            <p>Height: {photo.height}</p>
-            <p>Width: {photo.width}</p>
-          </div>
-        ))}
+                      >
+                        <DownloadForOfflineIcon
+                          style={{
+                            color: "white",
+                            width: "40px",
+                            height: "40px",
+                          }}
+                        ></DownloadForOfflineIcon>
+                      </IconButton>
+                      <IconButton onClick={() => removeFromFavorite(photo.id)}>
+                        <HeartBrokenIcon
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            color: "white",
+                          }}
+                        />
+                      </IconButton>
+                    </>
+                  }
+                />
+              </ImageListItem>
+              <h3>
+                Description:
+                {!photo.description
+                  ? ` The user has not included any description.`
+                  : ` ${photo.description}`}
+              </h3>
+              <p>Height: {photo.height}</p>
+              <p>Width: {photo.width}</p>
+            </div>
+          ))
+        )}
       </ImageList>
     </div>
   );

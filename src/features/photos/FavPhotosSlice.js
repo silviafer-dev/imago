@@ -22,7 +22,9 @@ const favPhotosSlice = createSlice({
 
     updatePhoto(state, action) {
       const newStateDescription = state.collection.map((item) =>
-        item.id === action.payload.id ? action.payload : item
+        item.id === action.payload.id
+          ? { ...item, description: action.payload.description }
+          : item
       );
       localStorage.setItem(
         "favoritePhoto",

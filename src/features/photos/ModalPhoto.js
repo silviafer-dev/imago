@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { FormControl, Input, InputLabel, Paper } from "@mui/material";
-import { useDispatch } from "react-redux";
 import { updatePhoto } from "./FavPhotosSlice";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -19,13 +20,25 @@ const style = {
 };
 
 export function ModalPhoto({ open, handleClose, editPhoto }) {
+  const [edit, setEdit] = useState("");
+
   const dispatch = useDispatch();
 
-  const editDescription = (id) => {
-    dispatch(updatePhoto(id));
+  useEffect(() => {
+    if (editPhoto && editPhoto.description) {
+      setEdit(editPhoto.description);
+    } else {
+      setEdit("");
+    }
+  }, [editPhoto]);
+
+  const handleChange = (e) => {
+    setEdit(e.target.value);
   };
-  const handleChange = () => {
-    editDescription({...editPhoto,  });
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    dispatch(updatePhoto({ id: editPhoto.id, description: edit }));
   };
 
   return (
@@ -51,20 +64,18 @@ export function ModalPhoto({ open, handleClose, editPhoto }) {
         <Typography id="transition-modal-title" variant="h6" component="h2">
           {editPhoto.height} x {editPhoto.width}
         </Typography>
-        <FormControl>
-          <InputLabel htmlFor="my-input"></InputLabel>
-          <Input
-            id="my-input"
-            aria-describedby="my-helper-text"
-            value={editPhoto.description}
-            onChange={() => {
-              handleChange();
-            }}
-          />
-        </FormControl>
-        {/* <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-          {!editPhoto.description ? "no description" : editPhoto.description}
-        </Typography> */}
+        <form>
+          <FormControl>
+            <InputLabel htmlFor="my-input">Description:</InputLabel>
+            <Input
+              id="my-input"
+              aria-describedby="my-helper-text"
+              value={edit.description}
+              onChange={handleChange}
+            />
+            <button onClick={handleUpdate}>Update</button>
+          </FormControl>
+        </form>
       </Box>
     </Modal>
   );
