@@ -91,7 +91,6 @@ export function FavPhotos() {
       return 0;
     });
     setFavoriteState(orderedPhotos);
-    console.log(orderedPhotos);
   }, [favPhotos, orderBy]);
 
   const dispatch = useDispatch();
