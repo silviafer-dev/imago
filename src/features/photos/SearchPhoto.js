@@ -125,7 +125,7 @@ export function SearchPhoto({ photos, favPhotos }) {
           </Toolbar>
         </AppBar>
       </Box>
-      <Photos query={keyword} photos={photos} favPhotos={favPhotos} />;
+      <Photos query={keyword} photos={photos} favPhotos={favPhotos} />
     </div>
   );
 }

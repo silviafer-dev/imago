@@ -12,14 +12,14 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: "37%",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-export function ModalPhoto({ open, handleClose, editPhoto }) {
+export function ModalPhoto({ open, setOpen, handleClose, editPhoto }) {
   const [edit, setEdit] = useState("");
 
   const dispatch = useDispatch();
@@ -39,6 +39,7 @@ export function ModalPhoto({ open, handleClose, editPhoto }) {
   const handleUpdate = (e) => {
     e.preventDefault();
     dispatch(updatePhoto({ id: editPhoto.id, description: edit }));
+    setOpen(false);
   };
 
   return (

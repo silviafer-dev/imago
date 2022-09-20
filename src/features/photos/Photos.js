@@ -4,12 +4,14 @@ import {
   ImageListItemBar,
   Typography,
 } from "@mui/material";
+import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPhotos, selectState } from "./photoSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { addPhoto, removePhoto } from "./FavPhotosSlice";
+
 
 export function Photos({ query, favPhotos }) {
   const photos = useSelector(selectState);
@@ -49,7 +51,7 @@ export function Photos({ query, favPhotos }) {
   };
 
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <Typography variant="h3" style={{ marginLeft: "20px" }}>
         Photos
       </Typography>
@@ -63,7 +65,7 @@ export function Photos({ query, favPhotos }) {
               rows={img.rows || 1}
             >
               <img
-                src={img.urls.thumb}
+                src={img.urls.regular}
                 alt={img.alt_description}
                 loading="lazy"
               />
@@ -78,18 +80,18 @@ export function Photos({ query, favPhotos }) {
                     {favPhotos.find((item) => item.id === img.id) ? (
                       <FavoriteIcon
                         style={{
-                          width: "40px",
+                          width: "70%",
                           height: "40px",
-                          color: "red",
+                          color: "white",
                         }}
                         onClick={() => removeFromFavorite(img.id)}
                       />
                     ) : (
                       <FavoriteBorderIcon
                         style={{
-                          width: "40px",
+                          width: "70%",
                           height: "40px",
-                          color: "red",
+                          color: "white",
                         }}
                         onClick={() => addToFavorite(img.id)}
                       />
@@ -100,9 +102,16 @@ export function Photos({ query, favPhotos }) {
             </ImageListItem>
           ))
         ) : (
-          <Typography variant="h6" style={{ marginLeft: "20px" }}>
-            No matches found...
-          </Typography>
+          <div>
+            <Typography
+              variant="h6"
+              style={{ marginLeft: "0px", paddingBottom: "50px" }}
+            >
+              No matches found...
+            </Typography>
+
+            <NoPhotographyIcon color="#6e6e6d" sx={{ fontSize: 200 }} />
+          </div>
         )}
       </ImageList>
     </div>

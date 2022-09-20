@@ -23,7 +23,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
-
+import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
@@ -198,36 +198,107 @@ export function FavPhotos() {
           </Toolbar>
         </AppBar>
       </Box>
-      <Typography variant="h3" style={{ marginLeft: "20px" }}>
-        My Photos
-      </Typography>
+      <div style={{ padding: "20px" }}>
+        <Typography variant="h3">My Photos</Typography>
 
-      <FormControl
-        variant="filled"
-        sx={{ m: 1, minWidth: 120, margin: "20px" }}
-      >
-        <InputLabel id="demo-simple-select-label">Order By: </InputLabel>
-        <Select
-          value={orderBy}
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          onChange={(e) => setOrderBy(e.target.value)}
+        <FormControl
+          variant="filled"
+          sx={{ m: 1, minWidth: 120, margin: "20px" }}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value="width">Width</MenuItem>
-          <MenuItem value="height">Height</MenuItem>
-          <MenuItem value="likes">Likes</MenuItem>
-        </Select>
-      </FormControl>
+          <InputLabel id="demo-simple-select-label">Order By: </InputLabel>
+          <Select
+            value={orderBy}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            onChange={(e) => setOrderBy(e.target.value)}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="width">Width</MenuItem>
+            <MenuItem value="height">Height</MenuItem>
+            <MenuItem value="likes">Likes</MenuItem>
+          </Select>
+        </FormControl>
 
-      <ModalPhoto open={open} handleClose={handleClose} editPhoto={editPhoto} />
+        <ModalPhoto
+          open={open}
+          setOpen={setOpen}
+          handleClose={handleClose}
+          editPhoto={editPhoto}
+        />
 
-      <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
-        {favoriteState.length === 0 ? (
-          filteredPhoto.length ? (
-            filteredPhoto.map((photo) => (
+        <ImageList sx={{ width: "100%" }} variant="woven" cols={3} gap={8}>
+          {favoriteState.length === 0 ? (
+            filteredPhoto.length ? (
+              filteredPhoto.map((photo) => (
+                <div key={photo.id}>
+                  <ImageListItem
+                    key={photo.id}
+                    sx={{ height: "400px", width: "100%" }}
+                  >
+                    <img
+                      onClick={() => {
+                        handleOpen(photo);
+                      }}
+                      src={photo.thumb}
+                      alt={photo.id}
+                      loading="lazy"
+                    />
+
+                    <ImageListItemBar
+                      title={`Likes: ${photo.likes}`}
+                      subtitle={`Saved: ${photo.setDate}`}
+                      actionIcon={
+                        <>
+                          <IconButton
+                            onClick={() => {
+                              downloadPhoto(photo.full);
+                            }}
+                          >
+                            <DownloadForOfflineIcon
+                              style={{
+                                color: "white",
+                                width: "70%",
+                                height: "40px",
+                              }}
+                            ></DownloadForOfflineIcon>
+                          </IconButton>
+                          <IconButton
+                            onClick={() => removeFromFavorite(photo.id)}
+                          >
+                            <HeartBrokenIcon
+                              style={{
+                                width: "70%",
+                                height: "40px",
+                                color: "white",
+                              }}
+                            />
+                          </IconButton>
+                        </>
+                      }
+                    />
+                  </ImageListItem>
+                  <h3>
+                    Description:
+                    {!photo.description
+                      ? ` The user has not included any description.`
+                      : ` ${photo.description}`}
+                  </h3>
+                  <p>Height: {photo.height}</p>
+                  <p>Width: {photo.width}</p>
+                </div>
+              ))
+            ) : (
+              <div style={{ padding: "7%" }}>
+                <Typography variant="h6" style={{ marginLeft: "20px" }}>
+                  Your favorite list is empty or no matches found!
+                </Typography>
+                <NoPhotographyIcon color="#6e6e6d" sx={{ fontSize: 200 }} />
+              </div>
+            )
+          ) : (
+            favoriteState.map((photo) => (
               <div key={photo.id}>
                 <ImageListItem
                   key={photo.id}
@@ -237,7 +308,7 @@ export function FavPhotos() {
                     onClick={() => {
                       handleOpen(photo);
                     }}
-                    src={photo.thumb}
+                    src={photo.regular}
                     alt={photo.id}
                     loading="lazy"
                   />
@@ -255,7 +326,7 @@ export function FavPhotos() {
                           <DownloadForOfflineIcon
                             style={{
                               color: "white",
-                              width: "40px",
+                              width: "70%",
                               height: "40px",
                             }}
                           ></DownloadForOfflineIcon>
@@ -266,7 +337,7 @@ export function FavPhotos() {
                           <HeartBrokenIcon
                             style={{
                               width: "40px",
-                              height: "40px",
+                              height: "70%",
                               color: "white",
                             }}
                           />
@@ -285,70 +356,9 @@ export function FavPhotos() {
                 <p>Width: {photo.width}</p>
               </div>
             ))
-          ) : (
-            <Typography variant="h6" style={{ marginLeft: "20px" }}>
-              No matches found...
-            </Typography>
-          )
-        ) : (
-          favoriteState.map((photo) => (
-            <div key={photo.id}>
-              <ImageListItem
-                key={photo.id}
-                sx={{ height: "400px", width: "100%" }}
-              >
-                <img
-                  onClick={() => {
-                    handleOpen(photo);
-                  }}
-                  src={photo.thumb}
-                  alt={photo.id}
-                  loading="lazy"
-                />
-
-                <ImageListItemBar
-                  title={`Likes: ${photo.likes}`}
-                  subtitle={`Saved: ${photo.setDate}`}
-                  actionIcon={
-                    <>
-                      <IconButton
-                        onClick={() => {
-                          downloadPhoto(photo.full);
-                        }}
-                      >
-                        <DownloadForOfflineIcon
-                          style={{
-                            color: "white",
-                            width: "40px",
-                            height: "40px",
-                          }}
-                        ></DownloadForOfflineIcon>
-                      </IconButton>
-                      <IconButton onClick={() => removeFromFavorite(photo.id)}>
-                        <HeartBrokenIcon
-                          style={{
-                            width: "40px",
-                            height: "40px",
-                            color: "white",
-                          }}
-                        />
-                      </IconButton>
-                    </>
-                  }
-                />
-              </ImageListItem>
-              <h3>
-                Description:
-                {!photo.description
-                  ? ` The user has not included any description.`
-                  : ` ${photo.description}`}
-              </h3>
-              <p>Height: {photo.height}</p>
-              <p>Width: {photo.width}</p>
-            </div>
-          ))
-        )}
-      </ImageList>
+          )}
+        </ImageList>
+      </div>
     </div>
   );
 }
