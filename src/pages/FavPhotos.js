@@ -308,7 +308,7 @@ export function FavPhotos() {
                     onClick={() => {
                       handleOpen(photo);
                     }}
-                    src={photo.regular}
+                    src={photo.thumb}
                     alt={photo.id}
                     loading="lazy"
                   />
