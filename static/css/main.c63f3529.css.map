@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.c63f3529.css","mappings":"4EAEA,KAEE,6BAAiC,CADjC,QAGF","sources":["index.css"],"sourcesContent":["@import url(\"https://fonts.googleapis.com/css2?family=Pacifico&display=swap\");\n\nbody {\n  margin: 0;\n  font-family: 'Roboto', sans-serif;\n\n}\n\n\n"],"names":[],"sourceRoot":""}
