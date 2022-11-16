@@ -142,7 +142,7 @@ export function FavPhotos() {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+      <Box sx={{ flexGrow: 1}}>
         <AppBar position="static" style={{ backgroundColor: "black" }}>
           <Toolbar>
             <IconButton
