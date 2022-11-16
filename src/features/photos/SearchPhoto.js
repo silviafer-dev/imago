@@ -4,7 +4,7 @@ import { Photos } from "./Photos";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-
+import { SvgIcon } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,6 +15,8 @@ import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
+import CameraOutlinedIcon from "@mui/icons-material/CameraOutlined";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,6 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export function SearchPhoto({ photos, favPhotos }) {
   const [keyword, setKeyword] = useState("");
+ 
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -77,7 +80,7 @@ export function SearchPhoto({ photos, favPhotos }) {
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, display: { xs: "block", sm: "none" } }}
             >
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
@@ -103,14 +106,43 @@ export function SearchPhoto({ photos, favPhotos }) {
                 )}
               </PopupState>
             </IconButton>
+            <SvgIcon
+              component={CameraOutlinedIcon}
+              sx={{ fontSize: "50px", marginRight: "20px" }}
+            />
             <Typography
               variant="h5"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              sx={{
+                fontFamily: "Pacifico",
+                height: " 40px",
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+              }}
             >
               IMAGO
             </Typography>
+
+            <Link
+              to="/favorite"
+              style={{
+                textDecoration: "none",
+                color: "white",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "Roboto",
+                  mr: 2,
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                FAVORITE
+              </Typography>
+            </Link>
+
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />

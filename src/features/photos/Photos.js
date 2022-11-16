@@ -12,7 +12,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { addPhoto, removePhoto } from "./FavPhotosSlice";
 
-
 export function Photos({ query, favPhotos }) {
   const photos = useSelector(selectState);
 
@@ -52,7 +51,11 @@ export function Photos({ query, favPhotos }) {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Typography variant="h3" style={{ marginLeft: "20px" }}>
+      <Typography
+        variant="h4"
+        style={{ marginLeft: "20px" }}
+        sx={{ fontFamily: "Pacifico" }}
+      >
         Photos
       </Typography>
 
@@ -69,7 +72,7 @@ export function Photos({ query, favPhotos }) {
                 alt={img.alt_description}
                 loading="lazy"
               />
-              <ImageListItemBar
+              <ImageListItemBar style={{display:'flex', justifyContent: 'space-between'}}
                 title={
                   img.user.instagram_username
                     ? `Ph: ${img.user.instagram_username}`

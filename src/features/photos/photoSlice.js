@@ -24,7 +24,7 @@ export const fetchPhotos = createAsyncThunk(
     return response.data.results;
   }
 );
-const initialState = { results: [] };
+const initialState = { results: [], status: "idle" };
 const searchSlice = createSlice({
   name: "photos",
   initialState,

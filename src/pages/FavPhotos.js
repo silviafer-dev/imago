@@ -14,6 +14,7 @@ import {
   InputLabel,
   Select,
   FormControl,
+  SvgIcon,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -27,7 +28,7 @@ import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
-
+import CameraOutlinedIcon from "@mui/icons-material/CameraOutlined";
 import { ModalPhoto } from "../features/photos/ModalPhoto";
 import { useEffect, useState } from "react";
 
@@ -141,7 +142,7 @@ export function FavPhotos() {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
         <AppBar position="static" style={{ backgroundColor: "black" }}>
           <Toolbar>
             <IconButton
@@ -149,7 +150,7 @@ export function FavPhotos() {
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, display: { xs: "block", sm: "none" } }}
             >
               <PopupState variant="popover" popupId="demo-popup-menu">
                 {(popupState) => (
@@ -175,14 +176,41 @@ export function FavPhotos() {
                 )}
               </PopupState>
             </IconButton>
+            <SvgIcon
+              component={CameraOutlinedIcon}
+              sx={{ fontSize: "50px", marginRight: "20px" }}
+            />
             <Typography
               variant="h5"
               noWrap
               component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              sx={{
+                fontFamily: "Pacifico",
+                height: " 40px",
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+              }}
             >
               IMAGO
             </Typography>
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: "white",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "Roboto",
+                  mr: 2,
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                HOME
+              </Typography>
+            </Link>
 
             <Search>
               <SearchIconWrapper>
@@ -199,28 +227,38 @@ export function FavPhotos() {
         </AppBar>
       </Box>
       <div style={{ padding: "20px" }}>
-        <Typography variant="h3">My Photos</Typography>
-
-        <FormControl
-          variant="filled"
-          sx={{ m: 1, minWidth: 120, margin: "20px" }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 20px",
+          }}
         >
-          <InputLabel id="demo-simple-select-label">Order By: </InputLabel>
-          <Select
-            value={orderBy}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            onChange={(e) => setOrderBy(e.target.value)}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="width">Width</MenuItem>
-            <MenuItem value="height">Height</MenuItem>
-            <MenuItem value="likes">Likes</MenuItem>
-          </Select>
-        </FormControl>
+          <Typography variant="h4" sx={{ fontFamily: "Pacifico" }}>
+            My Favorite Photos
+          </Typography>
 
+          <FormControl
+            variant="filled"
+            sx={{ m: 1, minWidth: 120, margin: "20px" }}
+          >
+            <InputLabel id="demo-simple-select-label">Order By: </InputLabel>
+            <Select
+              value={orderBy}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              onChange={(e) => setOrderBy(e.target.value)}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="width">Width</MenuItem>
+              <MenuItem value="height">Height</MenuItem>
+              <MenuItem value="likes">Likes</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
         <ModalPhoto
           open={open}
           setOpen={setOpen}
@@ -281,9 +319,11 @@ export function FavPhotos() {
                   </ImageListItem>
                   <h3>
                     Description:
-                    {!photo.description
-                      ? ` The user has not included any description.`
-                      : ` ${photo.description}`}
+                    <span style={{ fontStyle: "italic" }}>
+                      {!photo.description
+                        ? ` The user has not included any description.`
+                        : ` ${photo.description}`}
+                    </span>
                   </h3>
                   <p>Height: {photo.height}</p>
                   <p>Width: {photo.width}</p>
