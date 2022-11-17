@@ -50,7 +50,7 @@ export function Photos({ query, favPhotos }) {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "40px 20px" }}>
       <Typography
         variant="h4"
         style={{ marginLeft: "20px" }}

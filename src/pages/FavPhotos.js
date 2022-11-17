@@ -142,9 +142,9 @@ export function FavPhotos() {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1}}>
-        <AppBar position="static" style={{ backgroundColor: "black" }}>
-          <Toolbar>
+      <Box sx={{ flexGrow: 1, height: "90px" }}>
+        <AppBar position="fixed" style={{ backgroundColor: "black" }}>
+          <Toolbar style={{ height: "100px" }}>
             <IconButton
               size="large"
               edge="start"
@@ -176,23 +176,38 @@ export function FavPhotos() {
                 )}
               </PopupState>
             </IconButton>
-            <SvgIcon
-              component={CameraOutlinedIcon}
-              sx={{ fontSize: "50px", marginRight: "20px" }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component="div"
-              sx={{
-                fontFamily: "Pacifico",
-                height: " 40px",
-                flexGrow: 1,
-                display: { xs: "none", sm: "block" },
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: "white",
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
               }}
             >
-              IMAGO
-            </Typography>
+              <SvgIcon
+                component={CameraOutlinedIcon}
+                sx={{
+                  fontSize: "70px",
+                  marginLeft: "10%",
+                  paddingRight: "30px",
+                }}
+              />
+              <Typography
+                variant="h4"
+                noWrap
+                component="div"
+                sx={{
+                  fontFamily: "Pacifico",
+                  height: "50px",
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                IMAGO
+              </Typography>
+            </Link>
             <Link
               to="/"
               style={{
@@ -201,9 +216,10 @@ export function FavPhotos() {
               }}
             >
               <Typography
+                variant="h5"
                 sx={{
                   fontFamily: "Roboto",
-                  mr: 2,
+                  mr: 10,
                   flexGrow: 1,
                   display: { xs: "none", sm: "block" },
                 }}

@@ -17,7 +17,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import CameraOutlinedIcon from "@mui/icons-material/CameraOutlined";
 
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -62,7 +61,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export function SearchPhoto({ photos, favPhotos }) {
   const [keyword, setKeyword] = useState("");
- 
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -72,9 +70,9 @@ export function SearchPhoto({ photos, favPhotos }) {
   };
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }} onSubmit={handleSubmit}>
-        <AppBar position="static" style={{ backgroundColor: "black" }}>
-          <Toolbar>
+      <Box sx={{ flexGrow: 1, height: "90px" }} onSubmit={handleSubmit}>
+        <AppBar position="fixed" style={{ backgroundColor: "black" }}>
+          <Toolbar style={{ height: "100px" }}>
             <IconButton
               size="large"
               edge="start"
@@ -106,24 +104,31 @@ export function SearchPhoto({ photos, favPhotos }) {
                 )}
               </PopupState>
             </IconButton>
-            <SvgIcon
-              component={CameraOutlinedIcon}
-              sx={{ fontSize: "50px", marginRight: "20px" }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              component="div"
-              sx={{
-                fontFamily: "Pacifico",
-                height: " 40px",
-                flexGrow: 1,
-                display: { xs: "none", sm: "block" },
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+               alignItems: 'center'
               }}
             >
-              IMAGO
-            </Typography>
-
+              <SvgIcon
+                component={CameraOutlinedIcon}
+                sx={{ fontSize: "70px", marginLeft: "10%" , paddingRight: '30px'}}
+              />
+              <Typography
+                variant="h4"
+                noWrap
+                component="div"
+                sx={{
+                  fontFamily: "Pacifico",
+                  height: '50px',
+                  flexGrow: 1,
+                  display: { xs: "none", sm: "block" },
+                }}
+              >
+                IMAGO
+              </Typography>
+            </div>
             <Link
               to="/favorite"
               style={{
@@ -132,9 +137,10 @@ export function SearchPhoto({ photos, favPhotos }) {
               }}
             >
               <Typography
+                variant="h5"
                 sx={{
                   fontFamily: "Roboto",
-                  mr: 2,
+                  mr: 10,
                   flexGrow: 1,
                   display: { xs: "none", sm: "block" },
                 }}
