@@ -4,7 +4,7 @@ import { selectState } from "../features/photos/photoSlice";
 
 import { selectFavoriteState } from "../features/photos/FavPhotosSlice";
 
-export function Home() {
+function Home() {
   const photos = useSelector(selectState);
   const favPhotos = useSelector(selectFavoriteState);
 
@@ -14,3 +14,4 @@ export function Home() {
     </div>
   );
 }
+export default Home;

@@ -29,6 +29,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 import CameraOutlinedIcon from "@mui/icons-material/CameraOutlined";
+
 import { ModalPhoto } from "../features/photos/ModalPhoto";
 import { useEffect, useState } from "react";
 
@@ -73,7 +74,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export function FavPhotos() {
+function FavPhotos() {
   const favPhotos = useSelector(selectFavoriteState);
   const [open, setOpen] = useState(false);
   const [editPhoto, setEditPhoto] = useState("");
@@ -418,3 +419,4 @@ export function FavPhotos() {
     </div>
   );
 }
+export default FavPhotos;

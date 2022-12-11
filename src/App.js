@@ -1,19 +1,19 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import { FavPhotos } from "./pages/FavPhotos";
 
-import { Home } from "./pages/Home.js";
+import "./App.css";
+import Loader from "./pages/Loader";
+const Home = lazy(() => import("./pages/Home"));
+const FavPhotos = lazy(() => import("./pages/FavPhotos"));
 
 function App() {
   return (
-    <div className="App">
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/favorite" element={<FavPhotos />} />
-        </Routes>
-      </main>
-    </div>
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/favorite" element={<FavPhotos />} />
+      </Routes>
+    </Suspense>
   );
 }
 
